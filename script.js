@@ -1,5 +1,4 @@
-var tasks = {};
-var removed = false;
+var tasks = [];
 
 var loadTasks = function () {
   savedTasks = localStorage.getItem("tasks");
@@ -7,12 +6,24 @@ var loadTasks = function () {
     return false;
   }
   tasks = JSON.parse(savedTasks);
-  console.log(tasks);
+};
+
+var auditTasks = function () {
+  timeNow = moment().hour();
+  for (var i = 9; i < 18; i++) {
+    if (timeNow - i > 0) {
+      $("." + i).addClass("past");
+    } else if (timeNow - i < 0) {
+      $("." + i).addClass("future");
+    } else {
+      $("." + i).addClass("present");
+    }
+  }
 };
 
 var loadPage = function () {
   // clearScreen();
-  loadTasks();
+
   for (var i = 9; i < 18; i++) {
     var timeRow = $("<div>").addClass("row time-block");
     var timeHour = $("<div>").addClass("col-1 hour");
@@ -23,12 +34,14 @@ var loadPage = function () {
     } else {
       $(timeHour).html(i + "AM");
     }
-    tasks[i - 9].id = timeHour.text();
-    if (!tasks[i - 9].text) {
-      tasks[i - 9].text = "";
-    }
-    var timeTask = $("<div>").addClass("col-10 past description task");
+    tasks[i - 9] = { id: $(timeHour).text(), text: "", time: i };
+
+    loadTasks();
+
+    var timeTask = $("<div>").addClass("col-10 description task");
     $(timeTask).attr("id", $(timeHour).text());
+    $(timeTask).attr("time", i);
+    $(timeTask).addClass(String(i));
     $(timeTask).html(tasks[i - 9].text);
     var timeSave = $("<button>").addClass("col-1 btn saveBtn");
     $(timeSave).attr("id", $(timeHour).text());
@@ -38,7 +51,9 @@ var loadPage = function () {
     $(timeRow).append(timeSave);
     $(".container").append(timeRow);
   }
+  auditTasks();
 };
+
 loadPage();
 
 var saveTask = function () {
@@ -62,28 +77,25 @@ $(".time-block").on("click", ".saveBtn", function () {
 });
 
 $(".time-block").on("click", ".task", function () {
-  removed = false;
   console.log("please");
   var text = $(this).text().trim();
   var textInput = $("<textarea>").addClass("col-10 description").val(text);
   $(textInput).attr("id", $(this).attr("id"));
+  $(textInput).attr("time", $(this).attr("time"));
   $(this).replaceWith(textInput);
   textInput.trigger("focus");
 });
 
 $(".time-block").on("blur", "textarea", function () {
-  if (removed) {
-    return;
-  }
-  removed = true;
-  var text = $("<div>").addClass("col-10 description past task");
+  var text = $("<div>").addClass("col-10 description task");
   $(text).attr("id", $(this).attr("id"));
+  $(text).attr("time", $(this).attr("time"));
+  $(text).addClass(String($(text).attr("time")));
   $(text).html($(this).val());
-  // for (var i=0; i<9; i++){
-  //     if(tasks[i].id === $(this).attr("id")){
-  //       $(text).html(tasks[i].text);
-  //     }
-  // }
-  var replace = $(this);
-  $(replace).replaceWith(text);
+  $(this).replaceWith(text);
+  auditTasks();
 });
+
+setInterval(function () {
+  auditTasks();
+}, 60000);
