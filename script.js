@@ -64,7 +64,6 @@ var saveTask = function () {
 };
 
 var setTask = function (id, text) {
-  console.log(id, text);
   for (i = 0; i < 9; i++) {
     if (tasks[i].id === id) {
       tasks[i].text = text;
@@ -80,7 +79,6 @@ $(".time-block").on("click", ".saveBtn", function () {
 });
 
 $(".time-block").on("click", ".task", function () {
-  console.log("please");
   var text = $(this).text().trim();
   var textInput = $("<textarea>").addClass("col-10 description").val(text);
   $(textInput).attr("id", $(this).attr("id"));
@@ -101,5 +99,12 @@ $(".time-block").on("blur", "textarea", function () {
 
 setInterval(function () {
   auditTasks();
-  console.log("checked");
+  showDay();
 }, 60000);
+
+var showDay = function () {
+  $("#currentDay").text(moment().format("MMMM Do, YYYY"));
+  $("#currentTime").text(moment().format("hh:mm A"));
+};
+
+showDay();
