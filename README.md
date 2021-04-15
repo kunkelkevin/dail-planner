@@ -7,4 +7,4 @@ MomentJS is used to display the day and time in the header.  It also checks agai
 The website is [https://kunkelkevin.github.io/daily-planner/](https://kunkelkevin.github.io/daily-planner/)
 
 Screenshot showing the schedule for a workday
-![Daily Planner Screenshot](/img/screenshot-dp.png "Daily Planner")
+![Daily Planner Screenshot](/img/Screenshot-dp.png "Daily Planner")
