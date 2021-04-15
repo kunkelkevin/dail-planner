@@ -102,4 +102,4 @@ $(".time-block").on("blur", "textarea", function () {
 setInterval(function () {
   auditTasks();
   console.log("checked");
-}, 6000);
+}, 60000);
