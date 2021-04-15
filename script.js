@@ -12,10 +12,13 @@ var auditTasks = function () {
   timeNow = moment().hour();
   for (var i = 9; i < 18; i++) {
     if (timeNow - i > 0) {
+      $("." + i).removeClass("future present");
       $("." + i).addClass("past");
     } else if (timeNow - i < 0) {
+      $("." + i).removeClass("past present");
       $("." + i).addClass("future");
     } else {
+      $("." + i).removeClass("future past");
       $("." + i).addClass("present");
     }
   }
@@ -98,4 +101,5 @@ $(".time-block").on("blur", "textarea", function () {
 
 setInterval(function () {
   auditTasks();
-}, 60000);
+  console.log("checked");
+}, 6000);
