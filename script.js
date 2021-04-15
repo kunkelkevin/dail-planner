@@ -45,7 +45,6 @@ var loadPage = function () {
     $(timeTask).attr("id", $(timeHour).text());
     $(timeTask).attr("time", i);
     $(timeTask).addClass(String(i));
-    $(timeTask).html("tasks[i - 9].text");
     // $(timeTask).html(tasks[i - 9].text);
     var timeSave = $("<button>").addClass("col-1 btn saveBtn");
     $(timeSave).attr("id", $(timeHour).text());
